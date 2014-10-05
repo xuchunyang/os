@@ -1,7 +1,7 @@
 ToDo:
 - [-] boot kernel without GRUB
 - [x] Implementing Terminal Scrolling
-- [ ] Rendering Colorful ASCII Art
+- [x] Rendering Colorful ASCII Art
 
 Notes:
 * '-': this todo item has been canceled

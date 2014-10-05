@@ -123,13 +123,22 @@ void terminal_writestring(const char* data)
         terminal_putchar(data[i]);
 }
 
+void terminal_writestring_with_color(const char *data, enum vga_color fg, enum vga_color bg)
+{
+    terminal_color = make_color(fg, bg);
+    size_t len = strlen(data);
+    for ( size_t i = 0; i < len; i++ )
+        terminal_putchar(data[i]);
+    /* Restore default color */
+    terminal_color = make_color(COLOR_LIGHT_GREY, COLOR_BLACK);
+}
+
 void kernel_main()
 {
     terminal_initialize();
     for ( size_t i = 0; i < VGA_HEIGHT; i++ )
         terminal_writestring("Hello, Kernel World!\n");
 
-    terminal_writestring("this is not my own kernel.\n");
-    terminal_writestring("haha, newline is not a logicial char\n");
-    terminal_writestring("print another one line for tesiing scrolling\n");
+    terminal_writestring_with_color("this is NOT my own kernel.\n", COLOR_RED, COLOR_WHITE);
+    terminal_writestring("yet another line.\n");
 }
