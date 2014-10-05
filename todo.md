@@ -1,0 +1,2 @@
+- [ ] boot kernel without GRUB
+- [ ] add more kernel function in C
