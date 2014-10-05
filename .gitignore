@@ -1,1 +1,7 @@
-*.bin # flat-form binary files (e.g. DOS .COM, .SYS), created by nasm
+# ELF filename extension
+*.bin
+*.o
+*.elf
+
+# The result
+kernel
