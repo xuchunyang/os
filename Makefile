@@ -2,9 +2,9 @@ CROSS_PREFIX = /opt/local/bin/i386-elf
 
 # For kernel-101 (32 Bits and boot from  GRUB)
 build:
-	nasm -f elf kernel.asm -o kasm.o
-	$(CROSS_PREFIX)-gcc -m32 -std=c99 -c kernel.c -o kc.o
-	$(CROSS_PREFIX)-ld -m elf_i386 -T linker.ld -o kernel kasm.o kc.o
+	nasm -f elf boot.asm
+	$(CROSS_PREFIX)-gcc -m32 -std=c99 -c kernel.c
+	$(CROSS_PREFIX)-ld -m elf_i386 -T linker.ld -o kernel boot.o kernel.o
 
 run:
 	qemu-system-i386 -kernel kernel
