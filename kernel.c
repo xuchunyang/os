@@ -67,6 +67,22 @@ void terminal_initialize()
     }
 }
 
+void terminal_scroll()
+{
+    terminal_buffer = (uint16_t*) 0xB8000;
+    for (size_t y = 0; y < VGA_HEIGHT - 1; y++) {
+        for (size_t x = 0; x < VGA_WIDTH; x++) {
+            const size_t index = y * VGA_WIDTH + x;
+            terminal_buffer[index] = terminal_buffer[index + VGA_WIDTH];
+        }
+    }
+    --terminal_row;
+    /* clear last line */
+    terminal_color = make_color(COLOR_LIGHT_GREY, COLOR_BLACK);
+    for (size_t x = 0; x < VGA_WIDTH; x++)
+        terminal_buffer[ (VGA_HEIGHT-1) * (VGA_WIDTH) + x ] = make_vgaentry(' ', terminal_color);
+}
+
 void terminal_setcolor(uint8_t color)
 {
     terminal_color = color;
@@ -87,14 +103,16 @@ void terminal_putchar(char c)
         {
             terminal_column = 0;
             if ( ++terminal_row == VGA_HEIGHT )
-                terminal_row = 0;
+                // terminal_row = 0;
+                terminal_scroll();
         }
     }
     else
     {
         terminal_column = 0;
         if ( ++terminal_row == VGA_HEIGHT )
-            terminal_row = 0;
+            // terminal_row = 0;
+            terminal_scroll();
     }
 }
 
@@ -108,7 +126,10 @@ void terminal_writestring(const char* data)
 void kernel_main()
 {
     terminal_initialize();
-    terminal_writestring("Hello, Kernel World!\n");
+    for ( size_t i = 0; i < VGA_HEIGHT; i++ )
+        terminal_writestring("Hello, Kernel World!\n");
+
     terminal_writestring("this is not my own kernel.\n");
     terminal_writestring("haha, newline is not a logicial char\n");
+    terminal_writestring("print another one line for tesiing scrolling\n");
 }
