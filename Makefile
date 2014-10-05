@@ -1,7 +1,7 @@
 # For kernel-101 (32 Bits and boot from  GRUB)
 build:
 	nasm -f elf32 kernel.asm -o kasm.o
-	gcc -m32 -c kernel.c -o kc.o
+	gcc -m32 -std=c99 -c kernel.c -o kc.o
 	ld -m elf_i386 -T linker.ld -o kernel kasm.o kc.o
 
 run:
