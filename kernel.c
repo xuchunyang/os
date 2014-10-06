@@ -1,26 +1,35 @@
-#include <stdbool.h> /* bool type, C99 */
-#include <stddef.h>
-#include <stdint.h>
+/*
+ * Data type
+ */
+typedef unsigned char  uint8_t;
+typedef signed char    int8_t;
+typedef unsigned short uint16_t;
+typedef signed short   int16_t;
+typedef unsigned int   uint32_t;
+typedef signed int     int32_t;
 
+/*
+ * Video
+ */
 /* Hardware text mode color constants. */
 enum vga_color
 {
-    COLOR_BLACK = 0,
-    COLOR_BLUE = 1,
-    COLOR_GREEN = 2,
-    COLOR_CYAN = 3,
-    COLOR_RED = 4,
-    COLOR_MAGENTA = 5,
-    COLOR_BROWN = 6,
-    COLOR_LIGHT_GREY = 7,
-    COLOR_DARK_GREY = 8,
-    COLOR_LIGHT_BLUE = 9,
-    COLOR_LIGHT_GREEN = 10,
-    COLOR_LIGHT_CYAN = 11,
-    COLOR_LIGHT_RED = 12,
+    COLOR_BLACK         = 0,
+    COLOR_BLUE          = 1,
+    COLOR_GREEN         = 2,
+    COLOR_CYAN          = 3,
+    COLOR_RED           = 4,
+    COLOR_MAGENTA       = 5,
+    COLOR_BROWN         = 6,
+    COLOR_LIGHT_GREY    = 7,
+    COLOR_DARK_GREY     = 8,
+    COLOR_LIGHT_BLUE    = 9,
+    COLOR_LIGHT_GREEN   = 10,
+    COLOR_LIGHT_CYAN    = 11,
+    COLOR_LIGHT_RED     = 12,
     COLOR_LIGHT_MAGENTA = 13,
-    COLOR_LIGHT_BROWN = 14,
-    COLOR_WHITE = 15,
+    COLOR_LIGHT_BROWN   = 14,
+    COLOR_WHITE         = 15,
 };
 
 uint8_t make_color(enum vga_color fg, enum vga_color bg)
@@ -35,110 +44,110 @@ uint16_t make_vgaentry(char c, uint8_t color)
     return c16 | color16 << 8;
 }
 
-size_t strlen(const char* str)
+uint32_t strlen(const char* str)
 {
-    size_t ret = 0;
+    uint32_t ret = 0;
     while ( str[ret] != 0 )
         ret++;
     return ret;
 }
 
-static const size_t VGA_WIDTH = 80;
-static const size_t VGA_HEIGHT = 25;
+static const uint32_t VGA_WIDTH = 80;
+static const uint32_t VGA_HEIGHT = 25;
 
-size_t terminal_row;
-size_t terminal_column;
-uint8_t terminal_color;
-uint16_t* terminal_buffer;
+uint32_t screen_row;
+uint32_t screen_column;
+uint8_t screen_color;
+uint16_t* screen_buffer;
 
-void terminal_initialize()
+void screen_clear()
 {
-    terminal_row = 0;
-    terminal_column = 0;
-    terminal_color = make_color(COLOR_LIGHT_GREY, COLOR_BLACK);
-    terminal_buffer = (uint16_t*) 0xB8000; // video memory begins at address 0xb8000
-    for ( size_t y = 0; y < VGA_HEIGHT; y++ )
+    screen_row = 0;
+    screen_column = 0;
+    screen_color = make_color(COLOR_LIGHT_GREY, COLOR_BLACK);
+    screen_buffer = (uint16_t*) 0xB8000; // video memory begins at address 0xb8000
+    for ( uint32_t y = 0; y < VGA_HEIGHT; y++ )
     {
-        for ( size_t x = 0; x < VGA_WIDTH; x++ )
+        for ( uint32_t x = 0; x < VGA_WIDTH; x++ )
         {
-            const size_t index = y * VGA_WIDTH + x;
-            terminal_buffer[index] = make_vgaentry(' ', terminal_color);
+            const uint32_t index = y * VGA_WIDTH + x;
+            screen_buffer[index] = make_vgaentry(' ', screen_color);
         }
     }
 }
 
-void terminal_scroll()
+void screen_scroll()
 {
-    terminal_buffer = (uint16_t*) 0xB8000;
-    for (size_t y = 0; y < VGA_HEIGHT - 1; y++) {
-        for (size_t x = 0; x < VGA_WIDTH; x++) {
-            const size_t index = y * VGA_WIDTH + x;
-            terminal_buffer[index] = terminal_buffer[index + VGA_WIDTH];
+    screen_buffer = (uint16_t*) 0xB8000;
+    for (uint32_t y = 0; y < VGA_HEIGHT - 1; y++) {
+        for (uint32_t x = 0; x < VGA_WIDTH; x++) {
+            const uint32_t index = y * VGA_WIDTH + x;
+            screen_buffer[index] = screen_buffer[index + VGA_WIDTH];
         }
     }
-    --terminal_row;
+    --screen_row;
     /* clear last line */
-    terminal_color = make_color(COLOR_LIGHT_GREY, COLOR_BLACK);
-    for (size_t x = 0; x < VGA_WIDTH; x++)
-        terminal_buffer[ (VGA_HEIGHT-1) * (VGA_WIDTH) + x ] = make_vgaentry(' ', terminal_color);
+    screen_color = make_color(COLOR_LIGHT_GREY, COLOR_BLACK);
+    for (uint32_t x = 0; x < VGA_WIDTH; x++)
+        screen_buffer[ (VGA_HEIGHT-1) * (VGA_WIDTH) + x ] = make_vgaentry(' ', screen_color);
 }
 
-void terminal_setcolor(uint8_t color)
+void screen_setcolor(uint8_t color)
 {
-    terminal_color = color;
+    screen_color = color;
 }
 
-void terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
+void screen_putentryat(char c, uint8_t color, uint32_t x, uint32_t y)
 {
-    const size_t index = y * VGA_WIDTH + x;
-    terminal_buffer[index] = make_vgaentry(c, color);
+    const uint32_t index = y * VGA_WIDTH + x;
+    screen_buffer[index] = make_vgaentry(c, color);
 }
 
-void terminal_putchar(char c)
+void screen_putchar(char c)
 {
     if (c != '\n')
     {
-        terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
-        if ( ++terminal_column == VGA_WIDTH )
+        screen_putentryat(c, screen_color, screen_column, screen_row);
+        if ( ++screen_column == VGA_WIDTH )
         {
-            terminal_column = 0;
-            if ( ++terminal_row == VGA_HEIGHT )
-                // terminal_row = 0;
-                terminal_scroll();
+            screen_column = 0;
+            if ( ++screen_row == VGA_HEIGHT )
+                // screen_row = 0;
+                screen_scroll();
         }
     }
     else
     {
-        terminal_column = 0;
-        if ( ++terminal_row == VGA_HEIGHT )
-            // terminal_row = 0;
-            terminal_scroll();
+        screen_column = 0;
+        if ( ++screen_row == VGA_HEIGHT )
+            // screen_row = 0;
+            screen_scroll();
     }
 }
 
-void terminal_writestring(const char* data)
+void screen_write_string(const char* data)
 {
-    size_t datalen = strlen(data);
-    for ( size_t i = 0; i < datalen; i++ )
-        terminal_putchar(data[i]);
+    uint32_t datalen = strlen(data);
+    for ( uint32_t i = 0; i < datalen; i++ )
+        screen_putchar(data[i]);
 }
 
-void terminal_writestring_with_color(const char *data, enum vga_color fg, enum vga_color bg)
+void screen_write_string_with_color(const char *data, enum vga_color fg, enum vga_color bg)
 {
-    terminal_color = make_color(fg, bg);
-    size_t len = strlen(data);
-    for ( size_t i = 0; i < len; i++ )
-        terminal_putchar(data[i]);
+    screen_color = make_color(fg, bg);
+    uint32_t len = strlen(data);
+    for ( uint32_t i = 0; i < len; i++ )
+        screen_putchar(data[i]);
     /* Restore default color */
-    terminal_color = make_color(COLOR_LIGHT_GREY, COLOR_BLACK);
+    screen_color = make_color(COLOR_LIGHT_GREY, COLOR_BLACK);
 }
 
-void kernel_main()
+void kmain()
 {
-    terminal_initialize();
-    for ( size_t i = 0; i < VGA_HEIGHT; i++ )
-        terminal_writestring("Hello, Kernel World!\n");
+    screen_clear();
+    for ( uint32_t i = 0; i < VGA_HEIGHT; i++ )
+        screen_write_string("Hello, Kernel World!\n");
 
-    terminal_writestring_with_color("this is NOT my own kernel.\n", COLOR_RED, COLOR_WHITE);
-    terminal_writestring("yet another line.\n");
+    screen_write_string_with_color("this is NOT my own kernel.\n", COLOR_RED, COLOR_WHITE);
+    screen_write_string("yet another line.\n");
 }
