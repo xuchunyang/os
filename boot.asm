@@ -10,7 +10,7 @@ align 4
     dd 0x00       ; 'flag'
     dd -(0x1BADB002 + 0x00) ; 'checksum'
 
-; Setup the stack
+; Allocate a 16k stack
 section .bootstrap_stack
 align 4
 stack_bottom: times 16384 db 0

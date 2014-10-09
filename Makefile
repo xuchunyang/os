@@ -1,21 +1,28 @@
 # Make sure cross compiler tools is in PATH
 CROSS_PREFIX = i386-elf
+# C Compiler
 CC = ${CROSS_PREFIX}-gcc
-LD = ${CROSS_PREFIX}-ld
-AS = nasm
-
 CFLAGS := -I./ -Wall -O0 -m32 -ffreestanding -fno-exceptions -fno-stack-protector -nostdinc -fno-builtin
 
-SOURCES = kernel.c video.c
+# Linker
+LD = ${CROSS_PREFIX}-ld
+LDFLAG = -m elf_i386 -static -L ./ -T ./linker.ld
+
+# Assembly compiler
+AS = nasm
+ASMFLAG = -f elf
+
+
+SOURCES = memory.c string.c video.c kernel.c io.c
 OBJECTS = $(SOURCES:.c=.o)
 
 all: kernel run
 
 kernel: boot.o ${OBJECTS}
-	${LD} -m elf_i386 -T linker.ld -o $@ $^
+	${LD} ${LDFLAG} -o $@ $^
 
 boot.o: boot.asm
-	${AS} -f elf boot.asm
+	${AS} ${ASMFLAG} $<
 
 %.o: %.c
 	${CC} ${CFLAGS}  $< -c -o $@
