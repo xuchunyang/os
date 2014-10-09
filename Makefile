@@ -4,9 +4,9 @@ CC = ${CROSS_PREFIX}-gcc
 LD = ${CROSS_PREFIX}-ld
 AS = nasm
 
-CFLAGS := -Wall -O0 -m32 -ffreestanding -fno-exceptions -fno-stack-protector -nostdinc -fno-builtin -std=gnu99
+CFLAGS := -I./ -Wall -O0 -m32 -ffreestanding -fno-exceptions -fno-stack-protector -nostdinc -fno-builtin
 
-SOURCES = kernel.c
+SOURCES = kernel.c video.c
 OBJECTS = $(SOURCES:.c=.o)
 
 all: kernel run
