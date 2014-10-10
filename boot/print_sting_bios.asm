@@ -1,3 +1,4 @@
+[bits 16]
 ; al
 print_char:
     mov ah, 0x0e
