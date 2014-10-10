@@ -19,7 +19,7 @@ KERNEL_OFFSET equ 0x1000 ; kernel memory offset, which we will load our kernel
     jmp $
 
 %include "print_sting_bios.asm"
-%include "disk.asm"
+%include "disk_load.asm"
 %include "gdt.asm"
 %include "print_string_pm.asm"
 %include "switch_to_pm.asm"

@@ -1,12 +1,11 @@
-# ELF filename extension
-*.bin
+# ELF object files
 *.o
-*.elf
 
-kernel
+# Raw binary object file
+*.bin
 
-.gitignore
+# The OS (or Kernel) image
+*.img
 
-build
-
+# Tag created by 'ctags'
 tags
