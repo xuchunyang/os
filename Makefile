@@ -3,7 +3,7 @@ CC = i386-elf-gcc
 LD = i386-elf-ld
 
 # '-I./ -nostdinc': do not include sys header files, only use in directories specified with -I
-CFLAGS = -Wall -O0 -I./ -nostdinc -fno-builtin
+CFLAGS = -Wall -O0 -I./kernel/ -nostdinc -fno-builtin
 
 # Automatically generate lists of sources using wildcards.
 C_SOURCES = $(wildcard kernel/*.c)

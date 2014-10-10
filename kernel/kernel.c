@@ -1,5 +1,12 @@
+#include <types.h>
+#include <video.h>
+
 void kmain()
 {
-    char* video_memory = (char*) 0xb8000;
-    *video_memory = 'X';
+    init_video();
+    uint32_t i;
+    for (i = 0; i < 20; i++)
+        write_str("Hello, Kernel World!\n");
+
+    write_str("yet another line.\n");
 }
