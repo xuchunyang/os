@@ -16,19 +16,17 @@ print_string:
 done:
     ret
 
-
 ; dx
 print_hex:
-    ; todo
-    mov ax, dx
-    mov di, HEX_OUT + 2 ; jump '0x'
+    mov di, HEX_OUT + 2
+    mov ax, dx ; Save dx, since it will be used for 4 times
     mov si, hexstr
-    mov cx, 4 ; four places
+    mov cx, 4
 hexloop:
-    rol ax, 4 ; leftmost will
-    mov bx, ax ; become
-    and bx, 0x0f ; rightmost
-    mov bl, [si+bx]; index into hexstr
+    rol ax, 4
+    mov bx, ax
+    and bx, 0x0f
+    mov bl, [si + bx]
     mov [di], bl
     inc di
     dec cx
@@ -36,6 +34,7 @@ hexloop:
 
     mov si, HEX_OUT
     call print_string
+
     ret
 
 HELLO_MSG:
@@ -45,4 +44,4 @@ GOODBYE_MSG:
 HEX_OUT:
     db '0x0000', 13, 10, 0
 hexstr:
-    db '01234567890ABCDEF'
+    db '0123456789ABCDEF'

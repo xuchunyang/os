@@ -10,7 +10,7 @@ C_SOURCES = $(wildcard kernel/*.c)
 
 OBJ = $(C_SOURCES:.c=.o)
 
-all: os.img
+all: os.img run
 
 run: os.img
 	qemu-system-i386 $<
@@ -45,8 +45,8 @@ kernel.bin: kernel/kernel_entry.o ${OBJ}
 	nasm $< -f elf -o $@
 
 # Build the boot sector binary object file
-%.bin: %.asm
-	nasm -f bin -I './boot/' $< -o $@
+%.bin: %.asm ${ASM_DEPS}
+	nasm -f bin -I './boot/include/' $< -o $@
 
 clean:
 	rm -f *.bin *.o os.img

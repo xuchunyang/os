@@ -12,6 +12,14 @@ KERNEL_OFFSET equ 0x1000 ; kernel memory offset, which we will load our kernel
     mov si, MSG_REAL_MODE
     call print_string
 
+    ; Test print_hex
+    mov dx, 0x1234
+    call print_hex
+    mov dx, 0xface
+    call print_hex
+
+    jmp $
+
     call load_kernel
 
     call switch_to_pm ; Note that we never return from here
