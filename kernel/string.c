@@ -11,12 +11,28 @@ void *memset(void *dest, char val, int count)
     return dest;
 }
 
+int strcmp(const char *s1, const char *s2)
+{
+   while (*s1 && *s1 == *s2)
+       s1++, s2++;
+   return (uint8_t)*s1 - (uint8_t)*s2;
+}
+
+char *strcpy(char *dest, const char *src)
+{
+    char *p = dest;
+    while ((*dest++ = *src++))
+        ;
+    *dest = '\0';
+    return p;
+}
+
 size_t strlen(const char* str)
 {
-    size_t rtv = 0;
-    while (str[rtv] != 0)
-        rtv++;
-    return rtv;
+    size_t n = 0;
+    while (*str++)
+        n++;
+    return n;
 }
 
 void puts(const char* str)
