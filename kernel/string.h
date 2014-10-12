@@ -19,7 +19,7 @@ size_t strlen(const char *str);
 int strcmp(const char *s1, const char *s2);
 
 // String manipulation
-char *strcpy(char *dest, const char *src)
+char *strcpy(char *dest, const char *src);
 
 // String I/O (using video)
 void puts(const char *str);
