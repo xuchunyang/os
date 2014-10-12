@@ -1,12 +1,10 @@
 #include <types.h>
 #include <video.h>
+#include <string.h>
 
 void kmain()
 {
     init_video();
-    uint32_t i;
-    for (i = 0; i < 20; i++)
-        write_str("Hello, Kernel World!\n");
-
-    write_str("yet another line.\n");
+    kprintf("My name is %s, I'm %d years old.\n", "Chunyang Xu", 22);
+    kprintf("My name is %s, I'm %d years old.\n", "", 22);
 }

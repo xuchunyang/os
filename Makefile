@@ -1,12 +1,13 @@
-# My cross compiler tools
+# Mac OS X does not use ELF binaries, a cross-compiler is necessary.
 CC = i386-elf-gcc
 LD = i386-elf-ld
 
 # '-I./ -nostdinc': do not include sys header files, only use in directories specified with -I
-CFLAGS = -Wall -O0 -I./kernel/ -nostdinc -fno-builtin
+CFLAGS = -Wall -O0 -I./kernel/ -nostdinc -fno-builtin -fomit-frame-pointer
 
 # Automatically generate lists of sources using wildcards.
 C_SOURCES = $(wildcard kernel/*.c)
+HEADERS = $(wildcard kernel/*.h)
 
 OBJ = $(C_SOURCES:.c=.o)
 
@@ -37,7 +38,7 @@ kernel.bin: kernel/kernel_entry.o ${OBJ}
 	${LD} -o $@ -Ttext 0x1000 $^ --oformat binary
 
 # Generic rule for building 'somefile.o' from 'somefile.c'
-%.o: %.c
+%.o: %.c ${HEADERS}
 	${CC} ${CFLAGS} -c $< -o $@
 
 # Build the kernel entry object file

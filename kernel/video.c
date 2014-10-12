@@ -1,7 +1,6 @@
 #include <types.h>
 #include <video.h>
-#include <string.h> // strlen()
-#include <memory.h> // memset()
+#include <string.h> // strlen() and memset()
 
 uint32_t  screen_row;
 uint32_t  screen_column;
@@ -50,7 +49,7 @@ static void screen_putentryat(char c, uint8_t color, uint32_t x, uint32_t y)
     screen_buffer[index] = make_vgaentry(c, color);
 }
 
-void write_char(char c)
+void putch(char c)
 {
     if (c == '\n') {
         screen_column = 0;
@@ -66,16 +65,16 @@ void write_char(char c)
     }
 }
 
-void write_str(const char* str)
+void puts_mid_str(const char* str)
 {
-    uint32_t len = strlen(str);
-    uint32_t i;
+    size_t len = strlen(str);
+    size_t i;
     for (i = 0; i < len; i++)
-        write_char(str[i]);
+        putch(str[i]);
 }
 
-void write_color_str(const char* str, enum vga_color fg, enum vga_color bg)
+void puts_color_str(const char* str, enum vga_color fg, enum vga_color bg)
 {
     screen_color = make_color(fg, bg);
-    write_str(str);
+    puts_mid_str(str);
 }

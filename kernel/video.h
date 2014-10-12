@@ -28,8 +28,8 @@ enum vga_color
 #define VGA_HEIGHT  25
 
 void init_video(void);
-void write_char(char c);
-void write_str(const char* str);
-void write_color_str(const char* str, enum vga_color fg, enum vga_color bg);
+void putch(char c);
+void puts_mid_str(const char* str);
+void puts_color_str(const char* str, enum vga_color fg, enum vga_color bg);
 
-#endif
+#endif /* VIDEO_H */

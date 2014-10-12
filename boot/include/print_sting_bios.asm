@@ -16,6 +16,7 @@ print_string:
 done:
     ret
 
+; TODO Document this subroutine (including 'rol' instruction)
 ; dx
 print_hex:
     mov di, HEX_OUT + 2
