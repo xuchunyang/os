@@ -3,7 +3,7 @@
 
 #include <types.h>
 
-/* Hardware text mode color constants. */
+// Hardware text mode color constants
 enum vga_color
 {
     COLOR_BLACK         = 0,
@@ -24,12 +24,9 @@ enum vga_color
     COLOR_WHITE         = 15,
 };
 
-#define VGA_WIDTH   80
-#define VGA_HEIGHT  25
-
 void init_video(void);
 void putch(char c);
 void puts_mid_str(const char* str);
 void puts_color_str(const char* str, enum vga_color fg, enum vga_color bg);
 
-#endif /* VIDEO_H */
+#endif // VIDEO_H

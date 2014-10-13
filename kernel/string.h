@@ -25,4 +25,4 @@ char *strcpy(char *dest, const char *src);
 void puts(const char *str);
 void kprintf(const char *fmt, ...);
 
-#endif /* STRING_H */
+#endif // STRING_H

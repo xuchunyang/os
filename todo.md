@@ -1,9 +1,11 @@
 ToDo:
-- [-] boot kernel without GRUB
-- [x] Implementing Terminal Scrolling
+- [-] Boot kernel without GRUB
+- [x] Implementing screen scrolling
 - [x] Rendering Colorful ASCII Art
 - [x] Clean up kernel.c by deleting unnecessary code
 - [x] Add helper functions like kprint()
+- [x] Add helper functions on reading and writing I/O bus
+- [x] Move cursor when using video
 - [ ] Document the switching from 16-bits Real Mode to 32-bits Protected Mode.
 
 Notes:

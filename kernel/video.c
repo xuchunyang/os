@@ -1,9 +1,13 @@
 #include <types.h>
 #include <video.h>
 #include <string.h> // strlen() and memset()
+#include <io.h>    // outb()
 
-uint32_t  screen_row;
-uint32_t  screen_column;
+#define VGA_WIDTH   80
+#define VGA_HEIGHT  25
+
+uint32_t  screen_row = 0;
+uint32_t  screen_column = 0;
 uint8_t   screen_color;
 uint16_t* screen_buffer = (uint16_t *)0xB8000; // video memory begins at address 0xb8000
 
@@ -19,10 +23,26 @@ static uint16_t make_vgaentry(char c, uint8_t color)
     return c16 | color16 << 8;
 }
 
+// Updates the hardware cursor.
+static void move_cursor()
+{
+    // The screen is 80 characters wide...
+    uint16_t cursorLocation = screen_row * VGA_WIDTH + screen_column;
+    outb(0x3D4, 14);                  // Tell the VGA board we are setting the high cursor byte.
+    outb(0x3D5, cursorLocation >> 8); // Send the high cursor byte.
+    outb(0x3D4, 15);                  // Tell the VGA board we are setting the low cursor byte.
+    outb(0x3D5, cursorLocation);      // Send the low cursor byte.
+}
+
+
 void init_video(void)
 {
     memset((uint8_t *)screen_buffer, 0, VGA_WIDTH * VGA_HEIGHT * 2);
     screen_color = make_color(COLOR_LIGHT_GREY, COLOR_BLACK);
+
+    screen_row = 0;
+    screen_column = 0;
+    move_cursor();
 }
 
 static void screen_scroll()
@@ -63,14 +83,15 @@ void putch(char c)
                 screen_scroll();
         }
     }
+
+    move_cursor();
 }
 
 void puts_mid_str(const char* str)
 {
-    size_t len = strlen(str);
-    size_t i;
-    for (i = 0; i < len; i++)
-        putch(str[i]);
+    char c;
+    while ((c = *str++))
+        putch(c);
 }
 
 void puts_color_str(const char* str, enum vga_color fg, enum vga_color bg)
