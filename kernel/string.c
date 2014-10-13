@@ -55,6 +55,7 @@ void reverse(char s[])
     }
 }
 
+// Obtain an approximation of the number of digits for MAX_INT
 #define INT_STR_MAX (3 *sizeof (int))
 
 size_t uint32_to_str(uint32_t value, char str[INT_STR_MAX])
@@ -89,7 +90,7 @@ void kprintf(const char *fmt, ...)
             ival = va_arg(ap, int);
             // TODO Only positive number is supported
             uint32_to_str(ival, int_str_buf);
-            puts(sval);
+            puts(int_str_buf);
             break;
         case 'h': // "%h" hexadecimal
             ival = va_arg(ap, int);
