@@ -14,7 +14,7 @@ OBJ = $(C_SOURCES:.c=.o)
 all: os.img run
 
 run: os.img
-	qemu-system-i386 $<
+	qemu-system-i386 -serial stdio $<
 
 # For QEMU, 'qemu os.bin' does not work
 os.img: os.bin
