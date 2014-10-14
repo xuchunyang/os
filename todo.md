@@ -6,5 +6,6 @@
 - [x] Add helper functions on reading and writing I/O bus
 - [x] Move cursor when using video
 - [x] Fix kprint(), it does not work for now.
-- [ ] Get keyboard input
+- [ ] Set-up GDT via C
 - [ ] Document the switching from 16-bits Real Mode to 32-bits Protected Mode.
+- [ ] Get keyboard input
