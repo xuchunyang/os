@@ -7,5 +7,5 @@
 - [x] Move cursor when using video
 - [x] Fix kprint(), it does not work for now.
 - [ ] Set-up GDT via C
-- [ ] Document the switching from 16-bits Real Mode to 32-bits Protected Mode.
+- [x] Document the switching from 16-bits Real Mode to 32-bits Protected Mode.
 - [ ] Get keyboard input
