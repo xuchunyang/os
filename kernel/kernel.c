@@ -4,14 +4,15 @@
 #include <io.h>
 #include <debug.h>
 
+#include <dbg.h>
+
 void kmain()
 {
     debug_init();
     debug_puts("OS started kmain()");
 
     init_video();
-    kprintf("My name is %s, I'm %d years old.\n", "Chunyang Xu", 22);
-    kprintf("My name is %s, I'm %d years old.\n", "", 22);
+    log_info("enter C code: kmain()");
 
     debug_puts("OS ended kmain()");
 }
