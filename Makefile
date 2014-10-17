@@ -34,7 +34,7 @@ os.bin: boot/boot_sect.bin kernel.bin
 # This builds the binary of the kernel from two object files:
 # - the kernel_entry, which jump to main() in the kernel
 # - the compiled C kernel
-kernel.bin: kernel/kernel_entry.o ${OBJ}
+kernel.bin: kernel/kernel_entry.o kernel/klib.o ${OBJ}
 	${LD} -o $@ -Ttext 0x1000 $^ --oformat binary
 
 # Generic rule for building 'somefile.o' from 'somefile.c'
