@@ -7,6 +7,6 @@
 - [x] Move cursor when using video
 - [x] Fix kprint(), it does not work for now.
 - [x] Document the switching from 16-bits Real Mode to 32-bits Protected Mode.
-- [ ] How to call asm code from C and call C function from asm? how to pass parameter/return between c and asm?
+- [x] How to call asm code from C and call C function from asm? how to pass parameter/return between c and asm?
 - [ ] Set-up GDT and IDT from kernel via C
 - [ ] Get keyboard input

@@ -6,13 +6,17 @@
 
 #include <dbg.h>
 
+extern int add_two(int, int);
+extern int add_one(int *);
+
 void kmain()
 {
-    debug_init();
-    debug_puts("OS started kmain()");
-
     init_video();
     log_info("enter C code: kmain()");
 
-    debug_puts("OS ended kmain()");
+    log_info("1 + 2 = %d", add_two(1, 2));
+
+    int c = 3;
+    log_info("4 = %d", add_one(&c));
+    log_info("4 = %d", c);
 }

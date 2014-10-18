@@ -24,3 +24,27 @@ idt_flush:
     mov eax, [esp+4]  ; Get the pointer to the IDT, passed as a parameter.
     lidt [eax]        ; Load the IDT pointer.
     ret
+
+; Using ASM code from C code
+[global add_two]
+add_two:
+    ; setup stack
+    push ebp
+    mov ebp, esp
+    mov eax, [ebp+8]; 1st argument
+    mov ecx, [ebp+12]; 2nd argument
+    add eax, ecx
+    pop ebp
+    ret
+
+; int add_one(int * num)
+[global add_one]
+add_one:
+    push ebp
+    mov  ebp, esp
+    mov ecx, [ebp+8]; 1st argument
+    mov eax, 1
+    add eax, [ecx] ; add one and return result
+    mov [ecx], eax ; save result to num
+    pop ebp
+    ret
