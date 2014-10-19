@@ -23,3 +23,10 @@ NASM is used in this project.
 * boot.s - kernel entry point that sets up the processor environment
 * kernel.c - my actual kernel routines
 * linker.ld - for linking the above files
+
+# Reference
+
+* Intel 80386 Programmer's Reference Manual
+* PC Assembly Language
+* xv6 book
+* Operating System Concepts

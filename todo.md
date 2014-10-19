@@ -8,5 +8,6 @@
 - [x] Fix kprint(), it does not work for now.
 - [x] Document the switching from 16-bits Real Mode to 32-bits Protected Mode.
 - [x] How to call asm code from C and call C function from asm? how to pass parameter/return between c and asm?
+- [ ] Learn Protected Mode by reading some PM tutorials. (1. addressing/data access 2. interrupt 3. multtask)
 - [ ] Set-up GDT and IDT from kernel via C
 - [ ] Get keyboard input
