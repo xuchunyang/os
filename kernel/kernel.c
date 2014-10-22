@@ -1,22 +1,18 @@
 #include <types.h>
 #include <video.h>
 #include <string.h>
-#include <io.h>
-#include <debug.h>
+#include <gdt.h>
 
-#include <dbg.h>
-
-extern int add_two(int, int);
-extern int add_one(int *);
+#define sti() __asm__ ("sti")
+#define cli() __asm__ ("cli")
 
 void kmain()
 {
     init_video();
-    log_info("enter C code: kmain()");
+    kprintf("Enter kernel\n");
 
-    log_info("1 + 2 = %d", add_two(1, 2));
+    cli();
+    gdt_init();
 
-    int c = 3;
-    log_info("4 = %d", add_one(&c));
-    log_info("4 = %d", c);
+    kprintf("todo: xxx\n");
 }

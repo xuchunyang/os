@@ -18,7 +18,7 @@ run: os.img
 
 # For QEMU, 'qemu os.bin' does not work
 os.img: os.bin
-	qemu-img create -f raw $@ 1.4M
+	qemu-img create -f raw $@ 14M
 	dd conv=notrunc if=$< of=$@
 
 # This is the actual disk image that the computer loads,

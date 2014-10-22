@@ -1,50 +1,73 @@
+// Base on gdt.c from Panda (Yukang Chen (moorekang@gmail.com))
+
+#if !defined(GDT_H)
+#define GDT_H
+
 #include <types.h>
 
-// GDT reference:
-// 1. http://wiki.osdev.org/Global_Descriptor_Table
-// 2. http://www.jamesmolloy.co.uk/tutorial_html/4.-The%20GDT%20and%20IDT.html
+#define NR_GDTENTRY 5
 
-/*
- *    7  6  5    4  3    0
- *  +---------------------+
- *  | P | DPL | DT | Type |
- *  +---------------------+
- *  Access byte format
- *
- *  P: is segment present? (1 = Yes)
- *  DPL: Descriptor Privilege Level - Ring 0-3
- *  DT: Descriptor Type
- *  Type: Segment type - code segment / data segment
- *
- *   7   6   5   4
- *  +---------------+
- *  | G | D | 0 | A |
- *  +---------------+
- *  Flags
- *
- *  G: Granularity (间隔尺度) (0 = 1 byte, 1 = 1 kbyte)
- *  D: Operand size (0 = 16bit, 1 = 32bit)
- *  0: Shoud always be zero.
- *  A: Available for system use (always zero).
- */
-struct gdt_entry_struct {
-    uint32_t        limit0_15:16; // limit low
-    uint32_t        base0_15 :16; // base low
-    uint32_t        base16_23:8;  // base next 8 bits
-    uint32_t        acces:8;      // Access flags, determine what ring this segment can be used in.
-    uint32_t        limit16_19:4;
-    uint32_t        flags:4;     // Flags
-    uint32_t        base24_31:8; // base hight
-} __attribute__ ((packed));
-typedef struct gdt_entry_struct gdt_entry_t;
+typedef uint32_t u32;
+typedef uint16_t u16;
+typedef uint8_t u8;
+typedef int8_t s8;
+typedef int16_t s16;
+typedef int32_t s32;
 
 
-struct gdt_ptr_struct {
-    uint16_t limit;      // The size of the GDT table
-    uint32_t base;        // The address of the first gdt_entry_t struct
-} __attribute__ ((packed));
-typedef struct gdt_ptr_struct gdt_ptr_t;
+/* Defines a GDT entry  */
+/* this page is a good refence */
+/* http://wiki.osdev.org/Global_Descriptor_Table */
+struct gdt_entry {
+    u32        limit_lo:16;    // Low bits of segment limit
+    u32        base_lo :16;    // Low bits of segment base address
+    u32        base_mi :8;     // Middle bits of segment base address
 
-// TODO: Init GDT
-// Initialisation function is publicly accessible.
-void init_gdt();
+    u32        type    :4;     // Segment type (see STS_ constants)
+    u32        s       :1;     // 0 = system, 1 = application
+    u32        dpl     :2;     // Descriptor Privilege Level
+    u32        present :1;     // Present
+
+    u32        limit_hi:4;     // High bits of segment limit
+    u32        avl     :1;     // Unused (available for software use)
+    u32        r       :1;     // Reserved
+    u32        db      :1;     // 0 = 16-bit segment, 1 = 32-bit segment
+    u32        g       :1;     // Granularity: limit scaled by 4K when set
+    u32        base_hi :8;     // High bits of segment base address
+} __attribute__((packed));
+
+struct gdt_ptr {
+    u16  limit;
+    u32  base;
+} __attribute__((packed));
+
+
+// Application segment type bits
+#define STA_X       0x8     // Executable segment
+#define STA_E       0x4     // Expand down (non-executable segments)
+#define STA_C       0x4     // Conforming code segment (executable only)
+#define STA_W       0x2     // Writeable (non-executable segments)
+#define STA_R       0x2     // Readable (executable segments)
+#define STA_A       0x1     // Accessed
+
+
+// System segment type bits
+#define STS_LDT     0x2     // Local Descriptor Table
+#define STS_TG      0x5     // Task Gate / Coum Transmitions
+#define STS_TA      0x9     // Available 32-bit TSS
+#define STS_TB      0xB     // Busy 32-bit TSS
+#define STS_CG      0xC     // 32-bit Call Gate
+#define STS_IG      0xE     // 32-bit Interrupt Gate
+#define STS_TRG     0xF     // 32-bit Trap Gate
+#define RING0 0
+#define RING3 3
+
+#define KERN_CS (1<<3)
+#define KERN_DS (2<<3)
+#define USER_CS ((3<<3)|3)
+#define USER_DS ((4<<3)|3)
+
+void gdt_init();
+
+#endif
+
