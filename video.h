@@ -3,11 +3,18 @@
 
 #include "types.h"
 
+// Clear the screen to all black.
 void screen_clear();
-void screen_write_char(u8 col, u8 row, u8 attr, char c);
-void screen_write_string(u8 col, u8 row, u8 attr, char *str);
 
+// Output a null-terminated ASCII string to the monitor.
 void puts(const char *s);
+
+// Output a hex value to the monitor.
+void monitor_write_hex(u32 n);
+
+// Output a decimal value to the monitor.
+void monitor_write_dec(u32 n);
+
 void printf(const char *fmt, ...);
 
 #endif

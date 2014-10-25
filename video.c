@@ -1,5 +1,5 @@
 #include "types.h"
-#include "common.h" // memset
+#include "common.h" // memset, inb, outb
 #include "video.h"
 
 #define SCREEN_WIDTH 80
@@ -11,6 +11,37 @@ u8 row = 0; // 行
 
 #define WHITE_ON_BLACK 0x07
 u8 attr = WHITE_ON_BLACK; // default attr
+
+// Scrolls the text on the screen up by one line.
+static void scroll()
+{
+    u16 *video_memory = (u16 *)0xB8000;
+
+    // Get a space character with the default colour attributes.
+    u8 attributeByte = (0 /*black*/ << 4) | (15 /*white*/ & 0x0F);
+    u16 blank = 0x20 /* space */ | (attributeByte << 8);
+
+    // Row 25 is the end, this means we need to scroll up
+    if(row >= 25)
+    {
+        // Move the current text chunk that makes up the screen
+        // back in the buffer by a line
+        int i;
+        for (i = 0*80; i < 24*80; i++)
+        {
+            video_memory[i] = video_memory[i+80];
+        }
+
+        // The last line should now be blank. Do this by writing
+        // 80 spaces to it.
+        for (i = 24*80; i < 25*80; i++)
+        {
+            video_memory[i] = blank;
+        }
+        // The cursor should now be on the last line.
+        row = 24;
+    }
+}
 
 void screen_clear()
 {
@@ -29,6 +60,7 @@ void put_char(char c)
         col = 0;
         row++;
     }
+    scroll();
 }
 
 void puts(const char *s)
