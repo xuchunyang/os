@@ -1,6 +1,6 @@
 ; boot_sect.asm -- A simple boot sector program that print message vis BIOS
 
-bits 16                   
+bits 16
 org 0x7c00                      ; tell NASM to correct address of label
 
 KERNEL_OFFSET equ 0x1000 ; This is the memory offset to which we will load our kernel
@@ -36,7 +36,7 @@ load_kernel:
 
     ; todo load kernel (from disk)
     mov bx, KERNEL_OFFSET       ; Load 15 sector(2-16) to 0x0000(ES):0x1000(BX)
-    mov dh, 15                  ; from disk
+    mov dh, 30                  ; from disk
     mov dl, [BOOT_DRIVE]
     call disk_load
 
@@ -134,7 +134,7 @@ init_pm:
     mov es, ax
     mov fs, ax
     mov gs, ax
-    
+
     call KERNEL_OFFSET
 
     jmp $

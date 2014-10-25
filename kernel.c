@@ -1,9 +1,13 @@
 #include "types.h"
 #include "video.h"
+#include "gdt.h"
 
-void kmain () 
+void kmain ()
 {
     screen_clear();
-    screen_write_string(0, 0, 0x07, "Hello, kernel");
-    screen_write_string(0, 1, 0x70, "screen_write_string");
+
+    init_gdt();
+
+    init_idt();
+    asm volatile ("int $0x3");
 }
