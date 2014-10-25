@@ -8,3 +8,11 @@ void *memset(void *dest, char val, int count)
     }
     return dest;
 }
+
+int strlen(const char *s)
+{
+    int len;
+    for (len = 0; *s; s++)
+        len++;
+    return len;
+}

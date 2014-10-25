@@ -10,7 +10,7 @@ struct gdt_ptr   gdtr;
 
 void init_gdt()
 {
-    screen_write_string(0, 1, 0x07, "init_gdt");
+    puts("init_gdt...");
     gdtr.limit = sizeof(gdt_entries) - 1;
     gdtr.base  = (u32)&gdt_entries;
 
@@ -22,7 +22,7 @@ void init_gdt()
     gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); // User Mode data segment (0x20 Selector)
 
     gdt_flush((u32)&gdtr);
-    screen_write_string(0, 2, 0x07, "done");
+    puts("done\n");
 }
 
 static void gdt_set_gate(int num, u32 base, u32 limit, u8 access, u8 gran)
@@ -47,7 +47,7 @@ struct idt_ptr   idtr;
 
 void init_idt()
 {
-    screen_write_string(0, 10, 0x07, "init_ide...");
+    puts("init_idt...");
 
     idtr.limit = sizeof(idt_entries) - 1;
     idtr.base  = (u32)&idt_entries;
@@ -87,8 +87,8 @@ void init_idt()
     idt_set_gate( 30, (u32)isr30, 0x08, 0x8E);
     idt_set_gate( 31, (u32)isr31, 0x08, 0x8E);
 
-   idt_flush((u32)&idtr);
-   screen_write_string(0, 11, 0x07, "done");
+    idt_flush((u32)&idtr);
+    puts("done\n");
 }
 
 
