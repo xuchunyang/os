@@ -1,15 +1,17 @@
 #include "types.h"
 #include "video.h"
-#include "gdt.h"
+#include "descriptor_tables.h"
+#include "timer.h"
 
 void kmain ()
 {
     screen_clear();
     puts("Hello, kernel\n");
 
-    init_gdt();
+    init_descriptor_tables();
 
-    init_idt();
-    asm volatile ("int $0x3");
-    asm volatile ("int $0x8");
+    asm volatile("sti");
+    init_timer(50); // Initialise timer to 50Hz
+
+    printf("DONE %d \n", 2323);
 }
