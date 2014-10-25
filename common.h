@@ -14,4 +14,8 @@ typedef char* va_list;
 void *memset(void *dest, char val, int count);
 int strlen(const char *s);
 
+void outb(u16 port, u8 value);
+u8 inb(u16 port);
+u16 inw(u16 port);
+
 #endif
