@@ -29,10 +29,7 @@ void isr_handler(registers_t regs)
     }
     else
     {
-        printf("unhandled interrupt: ");
-        // monitor_write_hex(int_no);
-        // monitor_put('\n');
-
+        printf("unhandled interrupt: %d", int_no);
         for(;;);
     }
 }
