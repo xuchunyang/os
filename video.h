@@ -6,6 +6,8 @@
 // Clear the screen to all black.
 void screen_clear();
 
+void put_char(char c);
+
 // Output a null-terminated ASCII string to the monitor.
 void puts(const char *s);
 

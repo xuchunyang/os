@@ -2,6 +2,7 @@
 #include "video.h"
 #include "descriptor_tables.h"
 #include "timer.h"
+#include "keyboard.h"
 
 void kmain ()
 {
@@ -11,7 +12,10 @@ void kmain ()
     init_descriptor_tables();
 
     asm volatile("sti");
-    init_timer(50); // Initialise timer to 50Hz
 
     printf("DONE %d \n", 2323);
+
+    keyboard_init();
+    while (1)
+        ;
 }

@@ -1,4 +1,4 @@
-// 
+//
 // descriptor_tables.h - Defines the interface for initialising the GDT and IDT.
 //                       Also defines needed structures.
 //                       Based on code from Bran's kernel development tutorials.
@@ -72,10 +72,10 @@ struct tss_entry_struct
     u32 ss0;        // The stack segment to load when we change to kernel mode.
     u32 esp1;       // Unused...
     u32 ss1;
-    u32 esp2;  
-    u32 ss2;   
-    u32 cr3;   
-    u32 eip;   
+    u32 esp2;
+    u32 ss2;
+    u32 cr3;
+    u32 eip;
     u32 eflags;
     u32 eax;
     u32 ecx;

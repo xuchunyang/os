@@ -20,6 +20,10 @@ start:
     cli
     lgdt [gdt_desc]         ; Load the GDT descriptor
 
+    ;  Enables A20
+    mov al, 2   ; set bit 2 (enable a20)
+    out 0x92, al
+
     mov eax, cr0            ; Copy the contents of CR0 into EAX
     or eax, 1               ; Set bit 0     (0xFE = Real Mode)
     mov cr0, eax            ; Copy the contents of EAX into CR0
@@ -134,6 +138,14 @@ init_pm:
     mov es, ax
     mov fs, ax
     mov gs, ax
+
+    ;; check A20 enable
+    xor eax, eax
+err:
+    inc eax
+    mov [0x000000], eax
+    cmp [0x100000], eax
+    je err
 
     call KERNEL_OFFSET
 
