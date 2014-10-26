@@ -10,12 +10,16 @@ u32 tick = 0;
 static void timer_callback(registers_t *regs)
 {
     tick++;
+#ifdef DEBUG
+    // TODO use timer to do userful thing, like multitask
     printf("Tick: %d\n", tick);
+#endif
 }
 
 void init_timer(u32 frequency)
 {
-    printf("inti_timer\n");
+    printf("inti_timer...");
+
     // Firstly, register our timer callback.
     register_interrupt_handler(IRQ0, &timer_callback);
 
@@ -34,4 +38,6 @@ void init_timer(u32 frequency)
     // Send the frequency divisor.
     outb(0x40, l);
     outb(0x40, h);
+
+    printf("Done\n");
 }

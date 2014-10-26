@@ -20,7 +20,6 @@ char read_serial()
 {
     while ((inb(PORT + 5) & 1) == 0)
         ;
-
     return inb(PORT);
 }
 
@@ -31,7 +30,7 @@ void write_serial(char a)
     outb(PORT, a);
 }
 
-void debug_puts(char *msg) {
+void serial_debug_puts(char *msg) {
 
     for (char *ch = msg; *ch != 0; ch++) {
         outb(PORT, *ch);
@@ -40,7 +39,7 @@ void debug_puts(char *msg) {
     outb(PORT, '\n');
 }
 
-void debug_putsl(char *msg, u32 val) {
+void serial_debug_putsl(char *msg, u32 val) {
 
     for (char *ch = msg; *ch != 0; ch++) {
         outb(PORT, *ch);

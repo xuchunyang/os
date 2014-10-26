@@ -3,6 +3,6 @@
 
 #include "common.h"
 
-void keyboard_init();
+void init_kb();
 
 #endif

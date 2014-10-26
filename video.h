@@ -4,7 +4,7 @@
 #include "types.h"
 
 // Clear the screen to all black.
-void screen_clear();
+void init_screen();
 
 void put_char(char c);
 

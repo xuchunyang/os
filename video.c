@@ -43,7 +43,7 @@ static void scroll()
     }
 }
 
-void screen_clear()
+void init_screen()
 {
     memset((u8 *)screen, 0, SCREEN_WIDTH * SCREEN_HEIGHT * 2);
 }

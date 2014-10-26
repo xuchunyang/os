@@ -18,4 +18,9 @@ void outb(u16 port, u8 value);
 u8 inb(u16 port);
 u16 inw(u16 port);
 
+// serial.c
+void init_serial();
+void serial_debug_puts(char *msg);
+void serial_debug_putsl(char *msg, u32 val);
+
 #endif

@@ -6,16 +6,11 @@
 
 void kmain ()
 {
-    screen_clear();
-    puts("Hello, kernel\n");
-
+    init_serial();
+    init_screen();
     init_descriptor_tables();
+    init_timer(50);
+    init_kb();
 
-    asm volatile("sti");
-
-    printf("DONE %d \n", 2323);
-
-    keyboard_init();
-    while (1)
-        ;
+    while (1);
 }

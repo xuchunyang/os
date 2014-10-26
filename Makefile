@@ -27,7 +27,7 @@ boot_sect.bin: boot_sect.asm
 	${CC} ${CFLAGS} -c $< -o $@
 
 run: floppy.img
-	qemu-system-i386 floppy.img
+	qemu-system-i386 -serial stdio floppy.img
 
 clean:
 	rm -f *.bin *.o floppy.img

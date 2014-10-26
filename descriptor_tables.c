@@ -45,6 +45,7 @@ void init_descriptor_tables()
 
 static void init_gdt()
 {
+    printf("init_gdt...");
     gdt_ptr.limit = (sizeof(gdt_entry_t) * 6) - 1;
     gdt_ptr.base  = (u32)&gdt_entries;
 
@@ -57,6 +58,7 @@ static void init_gdt()
 
     gdt_flush((u32)&gdt_ptr);
     tss_flush();
+    printf("Done\n");
 }
 
 // Set the value of one GDT entry.
@@ -106,6 +108,7 @@ void set_kernel_stack(u32 stack)
 
 static void init_idt()
 {
+    printf("init_idt...");
     idt_ptr.limit = sizeof(idt_entry_t) * 256 -1;
     idt_ptr.base  = (u32)&idt_entries;
 
@@ -174,6 +177,8 @@ static void init_idt()
     idt_set_gate(128, (u32)isr128, 0x08, 0x8E);
 
     idt_flush((u32)&idt_ptr);
+    asm volatile("sti");
+    printf("Done\n");
 }
 
 static void idt_set_gate(u8 num, u32 base, u16 sel, u8 flags)

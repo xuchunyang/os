@@ -109,9 +109,9 @@ static void keyboard_handler(registers_t *regs)
     }
 }
 
-void keyboard_init()
+void init_kb()
 {
-    printf("keyboard_init\n");
+    printf("init_kb...");
 
     // Firstly, register our timer callback.
     register_interrupt_handler(IRQ1, &keyboard_handler);
@@ -124,4 +124,6 @@ void keyboard_init()
     outb(0x21, ~2);
     // Mask everything on the second interrupt controller.
     outb(0xa1, ~0);
+
+    printf("Done\n");
 }
