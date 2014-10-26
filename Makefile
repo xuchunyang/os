@@ -1,8 +1,8 @@
+# The linker, compiler, their flags, etc.
 CC = i386-elf-gcc
+AS = nasm
 LD = i386-elf-ld
-
-CFLAGS = -std=gnu99 -ffreestanding -fno-builtin -nostdlib -nostdinc -I./
-CFLAGS += -g -Wall
+CFLAGS = -std=gnu99 -g -O0 -Wall -Werror -ffreestanding -fno-omit-frame-pointer -fno-builtin -nostdlib -nostdinc -I./
 
 C_HEADERS = $(wildcard *.h)
 C_SRCS = $(wildcard *.c)
@@ -18,16 +18,26 @@ kernel.bin: loader.o gdt.o interrupt.o $(C_OBJS)
 	${LD} -o kernel.bin -Ttext 0x1000 loader.o $(C_OBJS) gdt.o interrupt.o --oformat binary
 
 boot_sect.bin: boot_sect.asm
-	nasm -f bin $< -o $@
+	$(AS) -f bin $< -o $@
 
 %.o: %.asm
-	nasm -f elf $< -o $@
+	$(AS) -f elf $< -o $@
 
-%.o: %.c ${C_HEADERS}
+%.o: %.c
 	${CC} ${CFLAGS} -c $< -o $@
 
 run: floppy.img
-	qemu-system-i386 -serial stdio floppy.img
+	qemu-system-i386 -net none -cpu pentium3 -serial stdio floppy.img
 
 clean:
 	rm -f *.bin *.o floppy.img
+
+lines:
+	@echo "Project contains" `ls *.h | wc -l` "header files," `ls *.c | wc -l` "source files," `ls *.asm | wc -l` "asm files"
+	@echo "\ttotaling" `cat *.h *.c *.asm | wc -l` "lines."
+
+todo:
+	@grep -n -r TODO *.h *.c *.asm
+
+# Deps for C-files including headers
+$(C_OBJS): $(C_HEADERS)
