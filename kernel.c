@@ -12,5 +12,7 @@ void kmain ()
     init_timer(50);
     init_kb();
 
+    PANIC("XXXXXXX");
+
     while (1);
 }
