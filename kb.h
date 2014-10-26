@@ -1,5 +1,5 @@
-#ifndef KEYBOARD_H
-#define KEYBOARD_H
+#ifndef KB_H
+#define KB_H
 
 #include "common.h"
 
