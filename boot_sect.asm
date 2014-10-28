@@ -1,4 +1,4 @@
-; boot_sect.asm -- A simple boot sector program that print message vis BIOS
+; boot_sect.asm -- A simple boot sector
 
 bits 16
 org 0x7c00                      ; tell NASM to correct address of label
@@ -38,9 +38,10 @@ load_kernel:
     mov  si, LOAD_KERNEL_MSG
     call print_str
 
-    ; todo load kernel (from disk)
-    mov bx, KERNEL_OFFSET       ; Load 15 sector(2-16) to 0x0000(ES):0x1000(BX)
-    mov dh, 30                  ; from disk
+    mov bx, KERNEL_OFFSET       ; Load 48 sector to 0x0000(ES):0x1000(BX)
+    mov dh, 24 * 1024 / 512     ; from disk (TODO: it should be real kernel size,
+                                ; but QEMU will not work if the size is too big,
+                                ; it should be a bug of this `disk_load`)
     mov dl, [BOOT_DRIVE]
     call disk_load
 
