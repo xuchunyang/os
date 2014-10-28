@@ -87,12 +87,20 @@ void reverse(char s[])
 // Obtain an approximation of the number of digits for MAX_INT
 #define INT_STR_MAX (3 *sizeof (int))
 
-int uint32_to_str(int value, char str[INT_STR_MAX])
+int u32_to_str(int value, int base, char str[INT_STR_MAX])
 {
+    const char *NUMBERS;
+    if (base == 10)
+        NUMBERS = "0123456789";
+    else if (base == 16)
+        NUMBERS = "0123456789ABCDEF";
+    else
+        return -1;
+
     char *wstr = str;
     do
-       *wstr++ = (char) "0123456789"[value % 10];
-    while (value /= 10);
+       *wstr++ = (char) NUMBERS[value % base];
+    while (value /= base);
     *wstr = '\0';
     // Reverse string
     reverse(str);
@@ -118,14 +126,15 @@ void printf(const char *fmt, ...)
         case 'd': // "%d", decimal
             ival = va_arg(ap, int);
             // TODO Only positive number is supported
-            uint32_to_str(ival, int_str_buf);
+            u32_to_str(ival, 10, int_str_buf);
             puts(int_str_buf);
             break;
-        case 'h': // "%h" hexadecimal
+        case 'x': // "%x" hexadecimal
             ival = va_arg(ap, int);
             // TODO Convert hexadecimal to string
-            sval = "Not Implement yet";
-            puts(sval);
+            u32_to_str(ival, 16, int_str_buf);
+            puts("0x");
+            puts(int_str_buf);
             break;
         case 's':
             for (sval = va_arg(ap, char *); *sval; sval++)

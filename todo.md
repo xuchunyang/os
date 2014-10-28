@@ -16,3 +16,5 @@
 - [ ] File system
 - [ ] system call
 - [ ] Switch to user mode
+- [x] printf: hex
+- [ ] Use ld
