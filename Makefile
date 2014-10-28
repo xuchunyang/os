@@ -15,7 +15,7 @@ floppy.img: boot_sect.bin kernel.bin
 
 # '0x1000' find correct address of labels
 kernel.bin: loader.o gdt.o interrupt.o $(C_OBJS)
-	${LD} -o kernel.bin -Ttext 0x1000 loader.o $(C_OBJS) gdt.o interrupt.o --oformat binary
+	${LD} -o kernel.bin -Ttext 0x1000 -e kmain loader.o $(C_OBJS) gdt.o interrupt.o --oformat binary
 
 boot_sect.bin: boot_sect.asm
 	$(AS) -f bin $< -o $@
