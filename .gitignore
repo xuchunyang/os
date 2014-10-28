@@ -1,12 +1,11 @@
-# ELF object files
-*.o
+kernel
 
-# Raw binary object file
 *.bin
-
-# The OS (or Kernel) image
+*.elf
+*.o
 *.img
 
-# Tag created by 'ctags'
 tags
 cscope.out
+.ackrc
+.ycm_extra_conf.py

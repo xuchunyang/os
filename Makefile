@@ -1,55 +1,42 @@
-# Mac OS X does not use ELF binaries, a cross-compiler is necessary.
 CC = i386-elf-gcc
+AS = nasm
 LD = i386-elf-ld
+CFLAGS = -std=gnu99 -g -O0 -Wall -Werror -ffreestanding -fno-omit-frame-pointer -fno-builtin -nostdlib -nostdinc -I./
 
-# '-I./ -nostdinc': do not include sys header files, only use in directories specified with -I
-CFLAGS = -g -DDEBUG -Wall -O0 -I./kernel/ -nostdinc -fno-builtin -fomit-frame-pointer
+C_HEADERS = $(wildcard *.h)
+C_SRCS = $(wildcard *.c)
+C_OBJS = $(C_SRCS:.c=.o)
 
-# Automatically generate lists of sources using wildcards.
-C_SOURCES = $(wildcard kernel/*.c)
-HEADERS = $(wildcard kernel/*.h)
+all:  floppy.img
 
-OBJ = $(C_SOURCES:.c=.o)
+floppy.img: boot_sect.bin kernel.bin
+	cat boot_sect.bin kernel.bin /dev/zero | dd bs=512 count=2880 of=floppy.img
 
-all: os.img run
+# '0x1000' find correct address of labels
+kernel.bin: loader.o gdt.o interrupt.o $(C_OBJS)
+	${LD} -o kernel.bin -Ttext 0x1000 loader.o $(C_OBJS) gdt.o interrupt.o --oformat binary
 
-run: os.img
-	qemu-system-i386 -serial stdio $<
+boot_sect.bin: boot_sect.asm
+	$(AS) -f bin $< -o $@
 
-# For QEMU, 'qemu os.bin' does not work
-os.img: os.bin
-	qemu-img create -f raw $@ 14M
-	dd conv=notrunc if=$< of=$@
+%.o: %.asm
+	$(AS) -f elf $< -o $@
 
-# This is the actual disk image that the computer loads,
-# which is the combination of compiled bootsector and kernel.
-os.bin: boot/boot_sect.bin kernel.bin
-	cat $^ > $@
-
-# Assemble the boot sector to raw machine code
-# 	The -I options tells nasm where to find assembly
-# 	routines which included in boot_sect.asm
-# boot_sect.bin: boot/boot_sect.asm
-
-# This builds the binary of the kernel from two object files:
-# - the kernel_entry, which jump to main() in the kernel
-# - the compiled C kernel
-kernel.bin: kernel/kernel_entry.o kernel/klib.o ${OBJ}
-	${LD} -o $@ -Ttext 0x1000 $^ --oformat binary
-
-# Generic rule for building 'somefile.o' from 'somefile.c'
-%.o: %.c ${HEADERS}
+%.o: %.c
 	${CC} ${CFLAGS} -c $< -o $@
 
-# Build the kernel entry object file
-%.o: %.asm
-	nasm $< -f elf -o $@
-
-# Build the boot sector binary object file
-%.bin: %.asm ${ASM_DEPS}
-	nasm -f bin -I './boot/include/' $< -o $@
+run: floppy.img
+	qemu-system-i386 -net none -cpu pentium3 -serial stdio floppy.img
 
 clean:
-	rm -f *.bin *.o os.img
-	rm -f boot/*.o boot/*.bin
-	rm -f kernel/*.o kernel/*.bin
+	rm -f *.bin *.o floppy.img
+
+lines:
+	@echo "Project contains" `ls *.h | wc -l` "header files," `ls *.c | wc -l` "source files," `ls *.asm | wc -l` "asm files"
+	@echo "\ttotaling" `cat *.h *.c *.asm | wc -l` "lines."
+
+todo:
+	@grep -n -r TODO *.h *.c *.asm
+
+# Deps for C-files including headers
+$(C_OBJS): $(C_HEADERS)
