@@ -1,6 +1,6 @@
-#include "types.h"
-#include "common.h" // memset, inb, outb
-#include "video.h"
+#include <types.h>
+#include <common.h> // memset, inb, outb
+#include <video.h>
 
 #define SCREEN_WIDTH 80
 #define SCREEN_HEIGHT 25

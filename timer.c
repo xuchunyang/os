@@ -1,9 +1,9 @@
 // timer.c -- Initialises the PIT, and handles clock updates.
 //            Written for JamesM's kernel development tutorials.
 
-#include "timer.h"
-#include "isr.h"
-#include "video.h"
+#include <timer.h>
+#include <isr.h>
+#include <video.h>
 
 u32 tick = 0;
 
@@ -18,7 +18,7 @@ static void timer_callback(registers_t *regs)
 
 void init_timer(u32 frequency)
 {
-    printf("inti_timer...");
+    printf("init_timer...");
 
     // Firstly, register our timer callback.
     register_interrupt_handler(IRQ0, &timer_callback);

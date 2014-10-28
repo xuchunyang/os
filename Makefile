@@ -1,7 +1,8 @@
 CC = i386-elf-gcc
 AS = nasm
 LD = i386-elf-ld
-CFLAGS = -std=gnu99 -g -O0 -Wall -Werror -ffreestanding -fno-omit-frame-pointer -fno-builtin -nostdlib -nostdinc -I./
+CFLAGS = -std=gnu99 -g -O0 -Wall -Werror -ffreestanding -fno-omit-frame-pointer -fno-builtin -nostdlib -nostdinc -I./inc/
+# CFLAGS += -DDEBUG
 
 C_HEADERS = $(wildcard *.h)
 C_SRCS = $(wildcard *.c)

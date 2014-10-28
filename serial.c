@@ -1,6 +1,6 @@
 // https://github.com/apparentlymart/ToyOS/blob/master/debug.c
 
-#include "common.h"
+#include <common.h>
 
 #define PORT 0x3f8       // COM!
 

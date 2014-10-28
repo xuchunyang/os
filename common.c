@@ -1,5 +1,5 @@
-#include "common.h"
-#include "video.h"
+#include <common.h>
+#include <video.h>
 
 void *memset(void *dest, char val, int count)
 {

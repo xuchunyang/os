@@ -1,6 +1,6 @@
-#include "kb.h"
-#include "isr.h"
-#include "video.h"
+#include <kb.h>
+#include <isr.h>
+#include <video.h>
 
 #define SHIFT_L 42
 #define SHIFT_R 54

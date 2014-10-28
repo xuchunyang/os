@@ -1,8 +1,8 @@
-#include "types.h"
-#include "video.h"
-#include "descriptor_tables.h"
-#include "timer.h"
-#include "kb.h"
+#include <types.h>
+#include <video.h>
+#include <descriptor_tables.h>
+#include <timer.h>
+#include <kb.h>
 
 void kmain ()
 {
