@@ -32,12 +32,5 @@ run: floppy.img
 clean:
 	rm -f *.bin *.o floppy.img
 
-lines:
-	@echo "Project contains" `ls *.h | wc -l` "header files," `ls *.c | wc -l` "source files," `ls *.asm | wc -l` "asm files"
-	@echo "\ttotaling" `cat *.h *.c *.asm | wc -l` "lines."
-
-todo:
-	@grep -n -r TODO *.h *.c *.asm
-
 # Deps for C-files including headers
 $(C_OBJS): $(C_HEADERS)
