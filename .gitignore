@@ -1,0 +1,11 @@
+kernel
+
+*.bin
+*.elf
+*.o
+*.img
+
+tags
+cscope.out
+.ackrc
+.ycm_extra_conf.py
