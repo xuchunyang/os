@@ -1,9 +1,10 @@
-kernel
+isofiles/
 
 *.bin
 *.elf
 *.o
 *.img
+*.iso
 
 tags
 cscope.out

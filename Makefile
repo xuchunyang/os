@@ -1,17 +1,26 @@
+# CROSS_PREFIX = i386-elf-
+CC = $(CROSS_PREFIX)gcc
+LD = $(CROSS_PREFIX)ld
 AS = nasm
-LD = i386-elf-ld
 
-all: os.img
+CFLAGS = -Wall -ffreestanding -nostdlib
 
-os.img: boot.bin
-	dd if=$^ of=$@ bs=512 count=1
+all: myos.iso
 
-boot.bin: boot.asm
-	$(AS) -f elf $^ -o boot.elf
-	$(LD) -m elf_i386 boot.elf -o $@ -T boot.ld
+start.o: start.asm
+	nasm -f elf32 $< -o $@
 
-run: os.img
-	qemu-system-i386 -m 128 -fda $^
+kernel.o: kernel.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+kernel.bin: start.o kernel.o
+	$(LD) -m elf_i386 -T link.ld $^ -o $@
+
+myos.iso: kernel.bin
+	@./disk.sh
+
+run-qemu: myos.iso
+	qemu-system-i386 -cdrom myos.iso -boot cd -m 64
 
 clean:
-	rm -f boot.elf boot.bin os.img
+	rm -f start.o kernel.o kernel.bin myos.iso
