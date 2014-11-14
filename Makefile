@@ -1,7 +1,7 @@
-CC = i386-elf-gcc
+CC = i686-elf-gcc
 AS = nasm
-LD = i386-elf-ld
-CFLAGS = -std=gnu99 -g -O0 -Wall -Werror -ffreestanding -fno-omit-frame-pointer -fno-builtin -nostdlib -nostdinc -I./inc/
+LD = i686-elf-ld
+CFLAGS = -std=gnu99 -g -O0 -Wall -ffreestanding -fno-omit-frame-pointer -fno-builtin -nostdlib -nostdinc -I./inc/
 # CFLAGS += -DDEBUG
 
 C_HEADERS = $(wildcard *.h)
@@ -26,7 +26,7 @@ boot_sect.bin: boot_sect.asm
 %.o: %.c
 	${CC} ${CFLAGS} -c $< -o $@
 
-run: floppy.img
+qemu: floppy.img
 	qemu-system-i386 -net none -cpu pentium3 -serial stdio floppy.img
 
 clean:
