@@ -3,7 +3,7 @@ CROSS = i686-elf-
 CC = $(CROSS)gcc
 LD = $(CROSS)ld
 AS = nasm
-CFLAGS = -std=c99 -g -Wall -Wextra -ffreestanding -nostdlib -lgcc
+CFLAGS = -std=c99 -Wall -Wextra -ffreestanding -nostdlib -lgcc
 
 ASOURCES = start.asm
 AOBJECTS = $(ASOURCES:.asm=.o)
@@ -18,13 +18,13 @@ all: build
 
 build: $(OBJECTS) linker.ld
 	@echo "Linking kernel..."
-	$(LD) -T linker.ld -o $(OUTPUT) $(OBJECTS)
+	$(CC) $(CFLAGS) -T linker.ld -o $(OUTPUT) $(OBJECTS)
 	@echo 'Making iso...'
 	@cp $(OUTPUT) isofiles/boot/
 	@grub-mkrescue -o os.iso isofiles/
 
 %.o: %.asm
-	$(AS) -f elf32 -F dwarf -g  $< -o $@
+	$(AS) -f elf32 $< -o $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
