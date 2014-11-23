@@ -3,11 +3,11 @@ CROSS = i686-elf-
 CC = $(CROSS)gcc
 LD = $(CROSS)ld
 AS = nasm
-CFLAGS = -std=c99 -Wall -Wextra -ffreestanding -nostdlib -lgcc
+CFLAGS = -std=c99 -Wall -Wextra -ffreestanding -nostdlib -lgcc -I./inc/
 
 ASOURCES = start.asm
 AOBJECTS = $(ASOURCES:.asm=.o)
-CSOURCES = kernel.c
+CSOURCES = kernel.c video.c string.c
 COMPILES = $(CSOURCES:.c=.o)
 
 OBJECTS = $(AOBJECTS) $(COMPILES)
