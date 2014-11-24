@@ -8,7 +8,7 @@ CFLAGS += -g
 
 ASOURCES = start.asm
 AOBJECTS = $(ASOURCES:.asm=.o)
-CSOURCES = kernel.c video.c string.c
+CSOURCES = kernel.c video.c string.c gdt.c
 COMPILES = $(CSOURCES:.c=.o)
 
 OBJECTS = $(AOBJECTS) $(COMPILES)

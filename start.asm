@@ -73,3 +73,19 @@ _start:
 .hang:
 	hlt
 	jmp .hang
+
+; Load the GDT.
+global load_gdt
+load_gdt:
+        extern gdt_ptr
+        lgdt [gdt_ptr]
+        push eax
+        mov eax, 0x10
+        mov ds, eax
+        mov es, eax
+        mov fs, eax
+        mov gs, eax
+        jmp 0x08:.cs
+        .cs:
+        pop eax
+        ret
