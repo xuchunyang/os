@@ -4,6 +4,7 @@ CC = $(CROSS)gcc
 LD = $(CROSS)ld
 AS = nasm
 CFLAGS = -std=c99 -Wall -Wextra -ffreestanding -nostdlib -lgcc -I./inc/
+CFLAGS += -g
 
 ASOURCES = start.asm
 AOBJECTS = $(ASOURCES:.asm=.o)
