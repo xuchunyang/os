@@ -8,5 +8,6 @@
 void init_screen(void);
 void putchar(char c);
 void puts(const char* str);
+int printf(const char* restrict format, ...);
 
 #endif

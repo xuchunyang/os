@@ -1,7 +1,7 @@
 #include <video.h>
 
-void kmain()
+void kmain(void)
 {
     init_screen();
-    puts("A Hobby OS\n");
+    printf("I am %s, %d(0x%x) years old.\n", "Chunyang Xu", 22, 22);
 }
