@@ -6,9 +6,9 @@ AS = nasm
 CFLAGS = -std=c99 -Wall -Wextra -ffreestanding -nostdlib -lgcc -I./inc/
 CFLAGS += -g
 
-ASOURCES = start.asm
+ASOURCES = start.asm interrupt.asm
 AOBJECTS = $(ASOURCES:.asm=.o)
-CSOURCES = kernel.c video.c string.c gdt.c
+CSOURCES = kernel.c video.c string.c gdt.c idt.c isr.c io.c
 COMPILES = $(CSOURCES:.c=.o)
 
 OBJECTS = $(AOBJECTS) $(COMPILES)

@@ -89,3 +89,10 @@ load_gdt:
         .cs:
         pop eax
         ret
+
+; Load the IDT
+global idt_flush
+idt_flush:
+        mov eax, [esp+4]  ; Get the pointer to the IDT, passed as a parameter.
+        lidt [eax]        ; Load the IDT pointer.
+        ret
